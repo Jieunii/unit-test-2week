@@ -39,7 +39,7 @@ public class MockServiceTest {
         //champion.getName()을 호출하면 "카이사"를 리턴한다.
         when(champion.getName()).thenReturn("카이사");
         assertThat(champion.getName(), is("카이사"));
-        System.out.println("Champion : " + champion.getName());
+        System.out.println("Champion : " + champion.getName()); //mock으로 만들었기 때문에 null값
     }
 
     // 1. when, thenReturn을 사용하여 어떠한 챔피언 이름을 입력해도 베인을 리턴하도록 테스트하세요
@@ -147,7 +147,7 @@ public class MockServiceTest {
         champion.setHasSkinCount(8);
 
         System.out.println("챔피언 : " + champion.getName());
-        System.out.println("챔피언 : " + champion.getName());
+        //System.out.println("챔피언 : " + champion.getName()); //한번 실행했기 때문에 통과
         verify(champion, timeout(200).atLeastOnce()).getName();
 
     }
@@ -170,6 +170,7 @@ public class MockServiceTest {
         when(mockService.findByName("리산드라")).thenReturn(new Champion("리산드라", "미드", 5));
         assertThat(mockService.findByName("리산드라").getPosition(), is("미드"));
         assertThat(mockService.findByName("리산드라").getHasSkinCount(), is(5));
+        assertThat(mockService.findByName("리산드라").getName(), is("리산드라"));
     }
 
     // 2. 2개 이상의 챔피언을 List로 만들어 전체 챔피언을 가져오는 메소드 호출시 그 갯수가 맞는지 확인하는 테스트 코드를 작성하세요.
@@ -203,7 +204,6 @@ public class MockServiceTest {
         champions.add(new Champion("애쉬", "바텀", 6));
 
         when(mockService.findAllChampions()).thenReturn(champions);
-        //assertThat(mockService.findByName("루시안").getName(), is("루시안"));
         assertThat(mockService.findAllChampions().get(0).getName(), is("루시안"));
         assertThat(mockService.findAllChampions().size(), is(3));
         verify(mockRepository, times(2)).findAll();
